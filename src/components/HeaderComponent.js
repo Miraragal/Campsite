@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NaveItem, Jumbotron, NavItem } from 'reactstrap';
+import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, Jumbotron, NavItem } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 class Header extends Component {
@@ -55,7 +55,7 @@ class Header extends Component {
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to="/concactus">
+                                    <NavLink className="nav-link" to="/contactus">
                                         <i className="fa fa-address-card fa-lg"/>Contact Us
                                     </NavLink>
                                 </NavItem>
