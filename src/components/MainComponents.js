@@ -1,7 +1,8 @@
 import React, {Component} from 'react'; //import Components from React
-import { Navbar, NavbarBrand} from 'reactstrap'; //import navbar from Boostrap
 import Directory from './/DirectoryComponents'; // import Directory component
 import CampsiteInfo from './CampsiteInfoComponent';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent'
 import {CAMPSITES} from '../shared/campsites';
 
 
@@ -11,7 +12,7 @@ class Main extends Component{
     this.state={
       campsites: CAMPSITES,
       selectedCampsites: null
-    };
+    }
   }
 
   onCampsiteSelect(campsiteId){
@@ -22,15 +23,12 @@ class Main extends Component{
   render (){
     return (
       <div>
-        <Navbar dark color="primary">
-          <div className="container">
-            <NavbarBrand href="/">NuCamp</NavbarBrand>
-          </div>
-        </Navbar>
+        <Header />
         <Directory campsites={this.state.campsites} onClick={campsiteId=> this.onCampsiteSelect(campsiteId)}/>
         <CampsiteInfo campsite={this.state.campsites.filter(campsite=> campsite.id === this.state.selectedCampsites)[0]}/> {/* Call Campsite component */}
+        <Footer />
       </div>
-    );
+    )
   }
 }
 
