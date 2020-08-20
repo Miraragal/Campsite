@@ -18,14 +18,14 @@ import { PROMOTIONS } from '../shared/promotions';
 // import { PROMOTIONS } from '../shared/promotions';
 
 
-const mapStateToProps= state =>{
-    return{
-      campsites: state.CAMPSITES,
-      comments: state.COMMENTS,
-      partners: state.PARTNERS,
-      promotions: state.PROMOTIONS
-    }
-}
+const mapStateToProps = state => {
+  return {
+      campsites: state.campsites,
+      comments: state.comments,
+      partners: state.partners,
+      promotions: state.promotions
+  };
+};
 
 class Main extends Component {
 
@@ -44,20 +44,20 @@ class Main extends Component {
 
     const HomePage = () => {
       return (
-        <Home
-          campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
-          promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
-          partner={this.props.partners.filter(partner => partner.featured)[0]}
-        />
+          <Home
+              campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
+              promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
+              partner={this.props.partners.filter(partner => partner.featured)[0]}
+          />
       );
-    }
+  };
 
-    const CampsiteWithId = ({ match }) => {
-      return (
-        <CampsiteInfo campsite={this.props.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]}
+  const CampsiteWithId = ({match}) => {
+    return (
+        <CampsiteInfo campsite={this.props.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]} 
           comments={this.props.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)} />
-      );
-    }
+    );
+};
 
 
     return (
