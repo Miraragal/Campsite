@@ -13,6 +13,7 @@ import { connect } from 'react-redux'; // Import shared elements with redux
 // import { PARTNERS } from '../shared/partners';
 // import { PROMOTIONS } from '../shared/promotions';
 import {addComment, fetchCampsites} from '../redux/ActionCreator';
+import {actions} from 'react-redux-form';
 
 
 const mapStateToProps = state => {
@@ -28,7 +29,8 @@ const mapStateToProps = state => {
 const mapDispatchtoProps= {
 
   addComment: (campsiteId, rating, author, text)=> (addComment(campsiteId, rating, author, text)),
-  fetchCampsites: () => (fetchCampsites())
+  fetchCampsites: () => (fetchCampsites()),
+  resetFeedbackForm: () => (actions.reset('feedbackForm'))
 }
 
 
@@ -85,7 +87,7 @@ class Main extends Component {
           {/* we use the attribute render and give it a function which contains the component jsx */}
           <Route path='/directory/:campsiteId' component={CampsiteWithId} />
           
-          <Route exact path='/contactus' component={Contact} />
+          <Route exact path='/contactus' render={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
           {/* We use the attribute component and give it the component name. We are not passing any state date. */}
 
           {/* Task 1 */}
