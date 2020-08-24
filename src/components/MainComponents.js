@@ -12,7 +12,7 @@ import { connect } from 'react-redux'; // Import shared elements with redux
 // import { COMMENTS } from '../shared/comments';
 // import { PARTNERS } from '../shared/partners';
 // import { PROMOTIONS } from '../shared/promotions';
-import {addComment} from '../redux/ActionCreator';
+import {addComment, fetchCampsites} from '../redux/ActionCreator';
 
 
 const mapStateToProps = state => {
@@ -27,7 +27,8 @@ const mapStateToProps = state => {
 
 const mapDispatchtoProps= {
 
-  addComment: (campsiteId, rating, author, text)=> (addComment(campsiteId, rating, author, text))
+  addComment: (campsiteId, rating, author, text)=> (addComment(campsiteId, rating, author, text)),
+  fetchCampsites: () => (fetchCampsites())
 }
 
 
@@ -44,12 +45,18 @@ class Main extends Component {
   //   };
   // }
 
+  componentDidMount(){
+    this.props.fetchCampsites();
+  }
+
   render() {
 
     const HomePage = () => {
       return (
           <Home
-              campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
+              campsite={this.props.campsites.campsites.filter(campsite => campsite.featured)[0]} // Doble campsites pq estamos llamando al array de campsites.js que contiene isLoading, errMess y campsites []
+              campsitesLoading={this.props.campsites.isLoading}
+              campsiteErrMess={this.props.campsites.errMess}
               promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
               partner={this.props.partners.filter(partner => partner.featured)[0]}
           />
@@ -58,7 +65,9 @@ class Main extends Component {
 
   const CampsiteWithId = ({match}) => {
     return (
-        <CampsiteInfo campsite={this.props.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]} 
+        <CampsiteInfo campsite={this.props.campsites.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]} 
+          isLoading={this.props.campsites.isLoading} // Idem que en Home anadimos llamamos array campsite.js
+          errMess={this.props.campsites.errMess}
           comments={this.props.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)}
           addComment={this.props.addComment}
           />
