@@ -21,6 +21,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import {addComment} from '../redux/ActionCreator';
 
 //--W4 CHALLENGE---//
 
@@ -33,7 +34,6 @@ class CommentForm extends Component {
   constructor(props) {
       super(props);
        
-
       this.state= {
           isModalOpen: false,
           author:"",
@@ -53,20 +53,20 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values){
-    console.log("Current state is: " + JSON.stringify(values))
-    alert("Current state is: " + JSON.stringify(values));  
+    this.toggleModal();
+    this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text)
   }
 
   render() {
     return (
       <div className="container">
         <Button outline onClick={this.toggleModal}>
-          <i className="fa fa-pencil-alt fa-lg" />
+          <i className="fa fa-pencil fa-lg" />
           Submit Comment
         </Button>
        
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+          <ModalHeader toggle={this.toggleModal}><strong>Submit Comment</strong></ModalHeader>
           <ModalBody>
             <LocalForm onSubmit={(values)=> this.handleSubmit(values)}>
               <Row className="form-group">
@@ -108,11 +108,9 @@ class CommentForm extends Component {
                     show="touched"
                     commponent="div"
                     messages={{
-                        required: "Required",
                         minLength:"Must be at least 2 characters",
                         maxLength:"Must be 15 characters or less"
                     }}
-
                 />
                 </Col>
               </Row>
@@ -160,7 +158,7 @@ function RenderCampsite({ campsite }) {
   );
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, campsiteId }) {
   if (comments) {
     return (
       <div className="col-md-5 m-1">
@@ -184,7 +182,7 @@ function RenderComments({ comments }) {
           </div>
         ))}
         <hr />
-        <CommentForm />
+        <CommentForm  campsiteId={campsiteId} addComment={ addComment}/>
       </div>
     );
   }
@@ -211,7 +209,9 @@ function CampsiteInfo(props) {
         <div className="row">
           <RenderCampsite campsite={props.campsite} />
           {/* Call the rederCampsite method and pass the campsite to it */}
-          <RenderComments comments={props.comments} />
+          <RenderComments comments={props.comments} 
+          addComment={props.addComment} 
+          campsiteId={props.campsite.id} />
           {/* Call the rederComments method and pass the campsite object's comments array */}
         </div>
       </div>
