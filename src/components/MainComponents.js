@@ -1,5 +1,5 @@
 import React, { Component } from "react"; //import Components from React
-import Directory from ".//DirectoryComponents"; // import Directory component
+import Directory from ".//DirectoryComponents";
 import CampsiteInfo from "./CampsiteInfoComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
@@ -17,9 +17,11 @@ import {
   fetchCampsites,
   fetchComments,
   fetchPromotions,
+  fetchPartners,
+  postFeedback,
 } from "../redux/ActionCreator";
 import { actions } from "react-redux-form";
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 const mapStateToProps = (state) => {
   return {
@@ -37,6 +39,9 @@ const mapDispatchtoProps = {
   resetFeedbackForm: () => actions.reset("feedbackForm"),
   fetchComments: () => fetchComments(),
   fetchPromotions: () => fetchPromotions(),
+  //NEW W5 CHALLENGE UPDATE
+  fetchPartners: () => fetchPartners(),
+  postFeedback: (feedback) => postFeedback(feedback),
 };
 
 class Main extends Component {
@@ -55,6 +60,8 @@ class Main extends Component {
     this.props.fetchCampsites();
     this.props.fetchComments();
     this.props.fetchPromotions();
+    //NEW W5 CHALLENGE UPDATE
+    this.props.fetchPartners();
   }
 
   render() {
@@ -67,7 +74,8 @@ class Main extends Component {
             )[0]
           } // Doble campsites pq estamos llamando al array de campsites.js que contiene isLoading, errMess y campsites []
           campsitesLoading={this.props.campsites.isLoading}
-          campsiteErrMess={this.props.campsites.errMess}
+          campsitesErrMess={this.props.campsites.errMess}
+          
           promotion={
             this.props.promotions.promotions.filter(
               (promotion) => promotion.featured
@@ -75,7 +83,15 @@ class Main extends Component {
           }
           promotionLoading={this.props.promotions.isLoading}
           promotionErrMess={this.props.promotions.errMess}
-          partner={this.props.partners.filter((partner) => partner.featured)[0]}
+          
+          //NEW W5 CHALLEGE UPDATE
+          partner={
+            this.props.partners.partners.filter(
+              (partner) => partner.featured
+            )[0]
+          }
+          partnersLoading={this.props.partners.isLoading}
+          partnersErrMess={this.props.partners.errMess}
         />
       );
     };
@@ -107,7 +123,7 @@ class Main extends Component {
             key={this.props.location.key}
             classNames="page" //ATT! classNameS
             timeout={300}
-          > 
+          >
             <Switch>
               <Route path="/home" component={HomePage} />
 
@@ -123,12 +139,14 @@ class Main extends Component {
                 exact
                 path="/contactus"
                 render={() => (
-                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                  <Contact
+                    resetFeedbackForm={this.props.resetFeedbackForm}
+                    postFeedback={this.props.postFeedback}
+                  />
                 )}
               />
               {/* We use the attribute component and give it the component name. We are not passing any state date. */}
 
-              {/* Task 1 */}
               <Route
                 exact
                 path="/aboutus"
